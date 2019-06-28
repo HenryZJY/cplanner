@@ -51,7 +51,7 @@ public class User {
 
     @JsonProperty
     @NonNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 

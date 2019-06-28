@@ -81,7 +81,7 @@ $( function() {
                     var myChart = new FusionCharts({
                     type: "heatmap",
                     renderAt: "chart-container", 
-                    width: "80%",
+                    width: "90%",
                     height: 80 * (ratio+1) + "%",
                     dataFormat: "json",
                     dataSource
@@ -94,7 +94,14 @@ $( function() {
     
     $('#startDate').change(render); 
     $('#endDate').change(render); 
-    
+
+    var date=new Date;
+    var year=date.getFullYear(); 
+    var month=date.getMonth() + 1;
+    month = (month < 10 ? "0"+month : month); 
+    $('#startDateText').val(year+"-"+month); 
+    $('#endDateText').val(year+"-"+month); 
+    render(); 
 });
 
 function diff(start, end){
