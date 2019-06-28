@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.dadeco</groupId>
-    <artifactId>cu996</artifactId>
+    <artifactId>cplanner</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cu996</name>
+    <name>cplanner</name>
     <description>Capacity board</description>
 
     <properties>

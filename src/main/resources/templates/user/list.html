@@ -3,7 +3,7 @@
 >
 <head>
 	<meta charset="utf-8">
-	<title>Capacity Plan</title>
+	<title>User List</title>
 	<meta name="viewport" content="width=device-width,minimum-scale=1">
 	<link rel="stylesheet" th:href="@{/public/amazeui/css/amazeui.min.css}" />
 	<link rel="stylesheet" th:href="@{/public/amazeui/css/admin.css}">
@@ -45,26 +45,13 @@
 
 	</script>
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-
-			// Initialize the plugin
-			$('#userCreation').popup();
-
-			// Set default `pagecontainer` for all popups (optional, but recommended for screen readers and iOS*)
-			$.fn.popup.defaults.pagecontainer = '#am-u-sm-12'
-		});
-
-	</script>
-
-
 </head>
 <body style="overflow:auto">		
 	<div th:replace="navigator"></div>
 	<div class="am-cf admin-main">
 		
   <!-- content start -->
-  <div class="admin-content" style="overflow:auto">
+  <div class="admin-content">
 		<div class="admin-content-body">
 		  <div class="am-cf am-padding am-padding-bottom-0">
 			<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">User Management</strong> / <small>all users</small></div>
@@ -76,7 +63,7 @@
 			<div class="am-u-sm-12 am-u-md-6">
 			  <div class="am-btn-toolbar">
 				<div class="am-btn-group am-btn-group-xs">
-				  <button type="button" class="am-btn am-btn-default userCreation_open"><span class="am-icon-plus"></span> Add User</button>
+				  <button type="button" class="am-btn am-btn-default" onclick="location.href='/users/toadd'"><span class="am-icon-plus"></span> Add User</button>
 				  <!--<button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> Save</button>-->
 				  <!--<button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 审核</button>-->
 				  <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span>Delete</button>
@@ -139,7 +126,7 @@
 
 				  </tbody>
 				</table>
-				<div class="am-cf" style="text-align: center">
+				<div class="am-cf" style="text-align: left">
 					<span th:text="${#lists.size(userList) + ' Records Found.'}"></span>
 				  <!--<div class="am-fr">
 					<ul class="am-pagination">
@@ -162,76 +149,7 @@
 			
 	  </div>
 	  <!-- content end -->
-		<div id="userCreation" class="container">
-
-			<div class="row" style="margin-top:20px">
-				<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-					<form th:action="@{/users}" method="post" th:object="${user}">
-						<fieldset>
-							<h1>Please Enter User Details</h1>
-							<div th:switch="${userCreated}">
-								<div th:case="true" class="alert alert-info">
-									User created successfully!
-								</div>
-
-								<div th:case="false" class="alert alert-info">
-									Can't create user!
-								</div>
-							</div>
-							<div class="form-group">
-								<input type="text" name="name" placeholder="Name"  class="form-control input-lg" th:field="*{name}">
-							</div>
-							<div class="form-group">
-								<input type="text" name="ntAccount" placeholder="NT Account"  class="form-control input-lg" th:field="*{ntAccount}">
-							</div>
-							<div class="form-group">
-								<input type="text" name="email" placeholder="Email"  class="form-control input-lg" th:field="*{email}">
-							</div>
-							<div class="form-group">
-								<input type="password" name="password" placeholder="Password"  class="form-control input-lg" th:field="*{password}">
-							</div>
-							<div class="form-group">
-								<select name="role"  class="form-control selcls" th:field="${user.role.name}">
-									<option th:each="r:${roleList}" th:value="${r.name}" th:text="${r.name}"></option>
-								</select>
-							</div>
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12">
-									<input type="submit" class="btn btn-lg btn-primary btn-block" value="Create User"/>
-								</div>
-							</div>
-
-						</fieldset>
-					</form>
-				</div>
-			</div>
-
-		</div>
+	</div>
 </body>
-
-
-
-<!--<script>
-$( function() {
-	$('#addPlanBtn').click(function() {
-            // alert($('#addPlanForm').serialize());
-			$.ajax({
-				type: "POST",
-				dataType: "html",
-				url: '/activity/save',
-				data: $('#addPlanForm').serialize(),
-				success: function (data) {
-					// var strresult=data;
-					// alert(strresult);
-					window.location = '/plan';
-				},
-				error: function(data) {
-					alert("error:"+data.responseText);
-					}
-			});
-        });
-
-} );-->
-
 
 </html>
