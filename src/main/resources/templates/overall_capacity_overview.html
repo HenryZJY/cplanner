@@ -1,0 +1,107 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+<meta charset="utf-8">
+<title>Overvall Capacity Overview</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<link rel="stylesheet" th:href="@{/public/amazeui/css/amazeui.min.css}" />
+<link rel="stylesheet" th:href="@{/public/amazeui/css/admin.css}">
+<link rel="stylesheet" th:href="@{/public/amazeui/css/amazeui.datetimepicker.css}" />
+
+<script type="text/javascript" th:src="@{/public/js/jquery-3.4.1.js}"></script>
+<script type="text/javascript" th:src="@{/public/js/fusioncharts.js}"></script>
+<script type="text/javascript" th:src="@{/public/js/jquery-fusioncharts.js}"></script>
+<script type="text/javascript" th:src="@{/public/js/themes/fusioncharts.theme.fusion.js}"></script>
+
+<script th:src="@{/public/amazeui/js/amazeui.min.js}"></script>
+<script th:src="@{/public/amazeui/js/amazeui.datetimepicker.min.js}"></script>
+<script th:src="@{/public/amazeui/js/app.js}"></script>
+</head>
+<body style="overflow: auto">
+	<div th:replace="navigator"></div>
+
+	<div class="am-cf" style="margin-top: 50px;">
+		<div class="am-g am-margin-top">
+			<div class="am-u-sm-4 am-u-md-2 am-input-group date" id="startDate" data-date-format="yyyy-mm">
+				<input size="16" type="text" class="am-form-field" readonly placeHolder="From Month" id="startDateText"> <span class="am-input-group-label add-on"><i
+					class="icon-th am-icon-calendar"></i></span>
+			</div>
+			<div style="float: left" class="am-u-sm-4 am-u-md-2 am-input-group date" id="endDate" data-date-format="yyyy-mm">
+				<input size="16" type="text" class="am-form-field" readonly placeHolder="To Month" id="endDateText"> <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+			</div>
+			<div style="float: right;">
+				<label>Weekly</label> <input id="isWeekly" type="checkbox" name="Weekly" value="1" style="margin-right: 50px;">
+			</div>
+		</div>
+
+	</div>
+
+	<div id="chart-container" style="overflow-x: auto"></div>
+
+</body>
+
+
+
+<script>
+  function diff(start, end){
+    d1 = start.split('-');
+    d2 = end.split('-');
+    return (parseInt(d2[0]) - parseInt(d1[0])) * 12 + (d2[1] - d1[1]);
+  }
+
+$( function() {
+  $('#startDate').datetimepicker({
+      minView : 3,
+      startView : 4,
+      autoclose: 1
+  });
+  $('#endDate').datetimepicker({
+      minView : 3,
+      startView : 4,
+      autoclose: 1
+  });
+
+  var render = function(){
+      start = $('#startDateText').val();   	
+  	  end = $('#endDateText').val();
+  	  isWeekly = $('#isWeekly').is(':checked');
+  	    	  
+      if(!start || !end){
+          return;
+      }
+
+      var ratio = diff(start, end);
+      if(ratio < 0){
+          return;
+      }
+
+      $.get("/capacity/getTeamMonthlyCapacity", { startMonth: start+'-01', endMonth: end+'-01' , isWeekly: isWeekly },
+          function(res){
+            if(res.status == 'fail'){
+                alert('query failed!');
+                return;
+            }
+            
+            var dataSource = res.data;
+            console.log(dataSource);
+            FusionCharts.ready(function() {
+                    var myChart = new FusionCharts({
+                    type: "gantt",
+                    renderAt: "chart-container", 
+                    width: 30 * (ratio+1) + "%",
+                    height: "85%",
+                    dataFormat: "json",
+                    dataSource
+                    }).render();
+                });
+            }
+        ); 
+
+    }   
+    
+    $('#startDate').change(render); 
+    $('#endDate').change(render); 
+    $('#isWeekly').change(render); 
+} );
+</script>
+</html>

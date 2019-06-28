@@ -1,0 +1,187 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+<head>
+	<meta charset="utf-8">
+	<title>Acitivity List</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1">
+	<link rel="stylesheet" th:href="@{/public/amazeui/css/amazeui.min.css}" />
+	<link rel="stylesheet" th:href="@{/public/amazeui/css/admin.css}">
+
+	<script type="text/javascript" th:src="@{/public/js/jquery-3.4.1.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/fusioncharts.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/jquery-fusioncharts.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/themes/fusioncharts.theme.fusion.js}"></script>
+
+	<script th:src="@{/public/amazeui/js/amazeui.min.js}"></script>
+	<script th:src="@{/public/amazeui/js/app.js}"></script>
+</head>
+<body>
+	<div th:replace="navigator"></div>
+
+  <div id="chart-container" style="overflow-x:auto">Activity chart is loading!</div>
+</body>
+
+
+
+<script>
+$( function() {
+	$.get("test.cgi", { name: "John", time: "2pm" },
+  	function(data){
+    	alert("Data Loaded: " + data);
+  });
+
+	$("#chart-container").insertFusionCharts({
+			type: "marimekko",
+			width: "100%",
+			height: "100%",
+			dataFormat: "json",
+			dataSource: {
+				chart: {
+					caption: "Processing of Municipal Waste in Select Countries",
+					subcaption: "For the year 2015",
+					numbersuffix: "%",
+					showsum: "1",
+					usepercentdistribution: "1",
+					showxaxispercentvalues: "0",
+					theme: "fusion",
+					drawcrossline: "0",
+					showvalues: "0"
+				},
+				categories: [
+					{
+						category: [
+							{
+								label: "RCM",
+								widthpercent: "15"
+							},
+							{
+								label: "BCP",
+								widthpercent: "15"
+							},
+							{
+								label: "i-Service",
+								widthpercent: "15"
+							},
+							{
+								label: "BCMS",
+								widthpercent: "15"
+							},
+							{
+								label: "Liferay Migration",
+								widthpercent: "15"
+							},
+							{
+								label: "CIAM",
+								widthpercent: "15"
+							}
+						]
+					}
+				],
+				dataset: [
+					{
+						seriesname: "BA",
+						color: "#149868",
+						data: [
+							{
+								value: "65"
+							},
+							{
+								value: "43"
+							},
+							{
+								value: "41"
+							},
+							{
+								value: "38"
+							},
+							{
+								value: "10"
+							},
+							{
+								value: "15"
+							}
+						]
+					},
+					{
+						seriesname: "PM",
+						color: "#E7BC4F",
+						data: [
+							{
+								value: "22"
+							},
+							{
+								value: "23"
+							},
+							{
+								value: "6"
+							},
+							{
+								value: "33"
+							},
+							{
+								value: "20"
+							},
+							{
+								value: "10"
+							}
+						]
+					},
+					{
+						seriesname: "DEVELOPMENT",
+						color: "#CE9B1C",
+						showvalues: "0",
+						data: [
+							{
+								value: "13"
+							},
+							{
+								value: "0"
+							},
+							{
+								value: "0"
+							},
+							{
+								value: "0"
+							},
+							{
+								value: "30"
+							},
+							{
+								value: "35"
+							}
+						]
+					},
+					{
+						seriesname: "Architect",
+						color: "#EA9999",
+						data: [
+							{
+								value: "0",
+								showvalue: "0"
+							},
+							{
+								value: "34"
+							},
+							{
+								value: "53"
+							},
+							{
+								value: "29"
+							},
+							{
+								value: "20"
+							},
+							{
+								value: "30"
+							}
+						]
+					}
+				]
+			}
+		});
+
+
+} );
+</script>
+</html>

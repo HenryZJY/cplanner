@@ -1,0 +1,94 @@
+@CHARSET "UTF-8";
+
+body {
+	width: 100%;
+	hight: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow: auto;
+	text-align: center;
+	background-image: url("/public/images/backgroud.jpg") !important;
+	background-repeat: no-repeat;
+	background-size: 118%;
+}
+
+.container {
+	width: 450px;
+	height: 350px;
+	background-color: white;
+	font-family: Calibri;
+	font-size: 14px;
+	color: #aaaaaa;
+	margin-top: 200px;
+	padding: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 8px;
+}
+
+.boschico {
+	width: 100%;
+	height: 100px;
+	background-image: url("/public/images/BOSCH_RGB.png") !important;
+	background-position: center;
+	background-size: 50%;
+	background-repeat: no-repeat;
+}
+
+.container h1 {
+	width: 100%;
+	height: 50px;
+	margin: 0px;
+}
+
+.container .form-username {
+	width: 100%;
+	height: 50px;
+	margin: 0px;
+}
+
+.container .form-username input {
+	width: 90%;
+	height: 40px;
+	margin: 0px;
+	font-size: 20px;
+}
+
+.container .form-password {
+	width: 100%;
+	height: 50px;
+	margin-top: 10px;
+}
+
+.container .form-password input {
+	width: 90%;
+	height: 40px;
+	margin: 0px;
+	font-size: 20px;
+}
+
+.container .row {
+	width: 100%;
+	height: 50px;
+	margin-top: 10px;
+}
+
+.container .row input {
+	width: 70%;
+	height: 40px;
+	margin-top: 5px;
+	font-size: 20px;
+	background-color: #005691;
+	border: 0px;
+	color: white;
+}
+
+.popup_content {
+	margin: 10px;
+	padding: 0 10px;
+	max-width: 60%;
+	border: 2px solid #444;
+	width: 50%;
+	height: 50%;
+	background: white;
+}

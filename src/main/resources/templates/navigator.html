@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+>
+    <body>
+		<header class="am-topbar am-topbar-inverse admin-header" th:fragment="navigator">
+			<div class="am-topbar-brand">
+				<span th:text="${'Hello ' + #request.userPrincipal.principal.name}"></span>
+			</div>
+		
+			<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+		
+			<div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+		
+				<ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+					<li><a th:href="@{/plan}">Activity Plan</a></li>
+					<li class="am-dropdown" data-am-dropdown>
+						<a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+							</span> Capacity Overview <span class="am-icon-caret-down"></span>
+						</a>
+						<ul class="am-dropdown-content">
+							<li><a th:href="@{/overview/team}">Overall Capacity</a></li>
+							<li><a th:href="@{/overview/me}">My Capacity</a></li>
+							<li><a th:href="@{/activity}">All Activites</a></li>
+						</ul>
+					</li>
+					
+					<li><a th:href="@{/users}">User Management</a></li>
+					<li><a th:href="@{/profile}">My Profile</a></li>
+					<li><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</header>
+	</body>
+</html>

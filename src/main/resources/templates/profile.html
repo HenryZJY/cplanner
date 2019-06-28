@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+<head>
+    <meta charset="utf-8">
+	<title>My Profile</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1">
+	<link rel="stylesheet" th:href="@{/public/amazeui/css/amazeui.min.css}" />
+	<link rel="stylesheet" th:href="@{/public/amazeui/css/admin.css}">
+
+	<script type="text/javascript" th:src="@{/public/js/jquery-3.4.1.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/fusioncharts.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/jquery-fusioncharts.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/themes/fusioncharts.theme.fusion.js}"></script>
+
+	<script th:src="@{/public/amazeui/js/amazeui.min.js}"></script>
+	<script th:src="@{/public/amazeui/js/app.js}"></script>
+</head>
+<body>
+	<div th:replace="navigator"></div>
+	<div class="am-cf admin-main">
+   <!-- content start -->
+	 <div class="admin-content">
+			<div class="admin-content-body">
+				<div class="am-cf am-padding am-padding-bottom-0">
+					<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">My Profile</strong> / <small>Personal information</small></div>
+				</div>
+	
+				<hr/>
+	
+				<div class="am-g">
+					<div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+						<div class="am-panel am-panel-default">
+							<div class="am-panel-bd">
+								<div class="am-g">
+									<div class="am-u-md-4">
+										<img class="am-img-circle am-img-thumbnail" src="/public/images/my-profile.png" alt=""/>
+									</div>
+									<!-- <div class="am-u-md-8">
+										<p>你可以使用<a href="#">gravatar.com</a>提供的头像或者使用本地上传头像。 </p>
+										<form class="am-form">
+											<div class="am-form-group">
+												<input type="file" id="user-pic">
+												<p class="am-form-help">请选择要上传的文件...</p>
+												<button type="button" class="am-btn am-btn-primary am-btn-xs">保存</button>
+											</div>
+										</form>
+									</div> -->
+								</div>
+							</div>
+						</div>
+	
+						<div class="am-panel am-panel-default">
+							<div class="am-panel-bd">
+								<div class="user-info">
+									<p>Workload Of Month</p>
+									<div class="am-progress am-progress-sm">
+										<div class="am-progress-bar" style="width: 60%"></div>
+									</div>
+									<p class="user-info-order">Idle: <strong>5 MD</strong></p>
+								</div>
+								<div class="user-info">
+									<div class="am-progress am-progress-sm">
+										<div class="am-progress-bar am-progress-bar-success" style="width: 80%"></div>
+									</div>
+									<p class="user-info-order">Occupied：<strong>10 MD</strong></p>
+								</div>
+							</div>
+						</div>
+	
+					</div>
+	
+					<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+						<form class="am-form am-form-horizontal">
+							<div class="am-form-group">
+								<label for="user-name" class="am-u-sm-3 am-form-label">Name</label>
+								<div class="am-u-sm-9" style="margin-top:10px;">
+									<span th:text="${#request.userPrincipal.principal.name}"></span>
+								</div>
+							</div>
+
+							<div class="am-form-group">
+								<label for="user-weibo" class="am-u-sm-3 am-form-label">NT Account</label>
+								<div class="am-u-sm-9" style="margin-top:10px;">
+									<span th:text="${#request.userPrincipal.principal.ntAccount}"></span>
+								</div>
+							</div>
+	
+							<div class="am-form-group">
+								<label for="user-email" class="am-u-sm-3 am-form-label">Email</label>
+								<div class="am-u-sm-9" style="margin-top:10px;">
+									<span th:text="${#request.userPrincipal.principal.email}"></span>
+								</div>
+							</div>	
+	
+							<div class="am-form-group">
+								<label for="user-intro" class="am-u-sm-3 am-form-label">Intro</label>
+								<div class="am-u-sm-9" style="margin-top:10px;">
+									<span>N/A</span>
+								</div>
+							</div>	
+							
+						</form>
+					</div>
+				</div>
+			</div>
+	
+		</div>
+		<!-- content end -->
+	</div>
+</body>
+
+
+
+<script>
+$( function() {
+
+
+} );
+</script>
+</html>
