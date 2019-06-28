@@ -85,12 +85,15 @@ public class CapacityController extends BaseController {
 				chart.put("subcaption", startMonth + "~" + endMonth);
 				chart.put("xAxisName", "");
 				chart.put("yAxisName", "");
-				chart.put("showplotborder", "0");
-				chart.put("showValues", "0");
-				chart.put("xAxisLabelsOnTop", "0");
+				chart.put("showplotborder", "1");
+				chart.put("showValues", "1");
+				chart.put("xAxisLabelsOnTop", "1");
 				chart.put("baseFontColor", "#333333");
 				chart.put("toolTipBorderRadius", "2");
 				chart.put("toolTipPadding", "5");
+				chart.put("plottooltext",
+						"<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >$tlLabel :</div>{br}Role : <b>$bllabel</b>{br}Daily Effort : <b>$dataValue</b>{br}");
+				chart.put("labelFontBold", "1");
 				chart.put("theme", "fusion");
 
 				root.put("chart", chart);
@@ -125,20 +128,20 @@ public class CapacityController extends BaseController {
 				columnNotWorking.put("code", "#aaaaaa");
 				columnNotWorking.put("minvalue", "-1");
 				columnNotWorking.put("maxvalue", "0");
-				columnNotWorking.put("label", "Not Working");
+				columnNotWorking.put("label", "Not Work");
 
 				colorArray.put(columnNotWorking);
 
 				JSONObject columnLower = new JSONObject();
-				columnLower.put("code", "#f6bc33");
+				columnLower.put("code", "#cacc3f");
 				columnLower.put("minvalue", "0");
 				columnLower.put("maxvalue", "4");
-				columnLower.put("label", "Lower");
+				columnLower.put("label", "Low");
 
 				colorArray.put(columnLower);
 
 				JSONObject columnGood = new JSONObject();
-				columnGood.put("code", "#6da81e");
+				columnGood.put("code", "#41cc3f");
 				columnGood.put("minvalue", "4");
 				columnGood.put("maxvalue", "9");
 				columnGood.put("label", "Good");
@@ -146,7 +149,7 @@ public class CapacityController extends BaseController {
 				colorArray.put(columnGood);
 
 				JSONObject columnOverload = new JSONObject();
-				columnOverload.put("code", "#e24b1a");
+				columnOverload.put("code", "#cc3f3f");
 				columnOverload.put("minvalue", "9");
 				columnOverload.put("maxvalue", "9999");
 				columnOverload.put("label", "Overload");
@@ -179,7 +182,11 @@ public class CapacityController extends BaseController {
 						capacity.put("columnid", dayInWeekEngSn);
 						capacity.put("value", dailyEffort);
 						capacity.put("tllabel", df.format(dayId));
-						capacity.put("trlabel", role);
+						capacity.put("bllabel", dailyEffort >= 0 ? role : " ");
+						capacity.put("displayValue", dailyEffort >= 0 ? dailyEffort + "" : " ");
+						capacity.put("toolText", dailyEffort >= 0
+								? "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >$tlLabel :</div>{br}Role : <b>$bllabel</b>{br}Daily Effort : <b>$dataValue</b>{br}"
+								: "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >$tlLabel :</div>");
 
 						dataArray.put(capacity);
 					}
