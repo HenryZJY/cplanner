@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.dadeco.cu996.api.error.BusinessException;
 import org.dadeco.cu996.api.model.ActivityRole;
@@ -91,8 +92,6 @@ public class CapacityController extends BaseController {
 				chart.put("baseFontColor", "#333333");
 				chart.put("toolTipBorderRadius", "2");
 				chart.put("toolTipPadding", "5");
-				chart.put("plottooltext",
-						"<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >$tlLabel :</div>{br}Role : <b>$bllabel</b>{br}Daily Effort : <b>$dataValue</b>{br}");
 				chart.put("labelFontBold", "1");
 				chart.put("theme", "fusion");
 
@@ -171,22 +170,42 @@ public class CapacityController extends BaseController {
 					if (!CommonUtil.isEmptyList(recordList)) {
 						// String name = recordList.get(0) == null ? "" : (String) recordList.get(0);
 						String role = recordList.get(1) == null ? "" : (String) recordList.get(1);
-						int dailyEffort = recordList.get(2) == null ? 0
-								: (int) ((BigDecimal) recordList.get(2)).doubleValue();
-						Integer weekInYear = (Integer) recordList.get(3);
-						String dayInWeekEngSn = (String) recordList.get(4);
-						Date dayId = new Date(((java.sql.Date) recordList.get(5)).getTime());
+						String dailyEffort = recordList.get(2) == null ? "" : (String) recordList.get(2);
+						int dailyEffortSum = recordList.get(3) == null ? 0
+								: (int) ((BigDecimal) recordList.get(3)).doubleValue();
+						Integer weekInYear = (Integer) recordList.get(4);
+						String dayInWeekEngSn = (String) recordList.get(5);
+						Date dayId = new Date(((java.sql.Date) recordList.get(6)).getTime());
+
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(dayId);
+
+						String year = cal.get(Calendar.YEAR) + "";
+						String month = cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH);
+						String day = cal.get(Calendar.DATE) + "";
+
+						String[] roles = role.split(",");
+						String[] dailyEfforts = dailyEffort.split(",");
+
+						StringBuffer toolText = new StringBuffer();
+						for (int j = 0; j < roles.length; j++) {
+							if (!CommonUtil.isEmptyString(roles[j])) {
+								toolText.append("Role : <b>" + roles[j] + "</b>&nbsp;&nbsp;&nbsp;&nbsp;");
+								toolText.append("Daily Effort : <b>" + dailyEfforts[j] + "</b>{br}");
+							}
+						}
 
 						JSONObject capacity = new JSONObject();
 						capacity.put("rowid", "W" + weekInYear.intValue());
 						capacity.put("columnid", dayInWeekEngSn);
-						capacity.put("value", dailyEffort);
-						capacity.put("tllabel", df.format(dayId));
-						capacity.put("bllabel", dailyEffort >= 0 ? role : " ");
-						capacity.put("displayValue", dailyEffort >= 0 ? dailyEffort + "" : " ");
-						capacity.put("toolText", dailyEffort >= 0
-								? "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >$tlLabel :</div>{br}Role : <b>$bllabel</b>{br}Daily Effort : <b>$dataValue</b>{br}"
-								: "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >$tlLabel :</div>");
+						capacity.put("value", dailyEffortSum);
+						capacity.put("tllabel", dailyEffortSum >= 0 ? dailyEffortSum + "" : " ");
+						capacity.put("displayValue", month + ". " + day);
+						capacity.put("toolText", dailyEffortSum >= 0
+								? "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >"
+										+ month + ". " + day + "</div>{br}" + toolText.toString()
+								: "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >"
+										+ month + ". " + day + "</div>");
 
 						dataArray.put(capacity);
 					}
