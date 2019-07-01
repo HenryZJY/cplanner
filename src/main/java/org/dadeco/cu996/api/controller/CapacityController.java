@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.dadeco.cu996.api.error.BusinessException;
 import org.dadeco.cu996.api.model.ActivityRole;
@@ -85,12 +86,13 @@ public class CapacityController extends BaseController {
 				chart.put("subcaption", startMonth + "~" + endMonth);
 				chart.put("xAxisName", "");
 				chart.put("yAxisName", "");
-				chart.put("showplotborder", "0");
-				chart.put("showValues", "0");
-				chart.put("xAxisLabelsOnTop", "0");
+				chart.put("showplotborder", "1");
+				chart.put("showValues", "1");
+				chart.put("xAxisLabelsOnTop", "1");
 				chart.put("baseFontColor", "#333333");
 				chart.put("toolTipBorderRadius", "2");
 				chart.put("toolTipPadding", "5");
+				chart.put("labelFontBold", "1");
 				chart.put("theme", "fusion");
 
 				root.put("chart", chart);
@@ -125,20 +127,20 @@ public class CapacityController extends BaseController {
 				columnNotWorking.put("code", "#aaaaaa");
 				columnNotWorking.put("minvalue", "-1");
 				columnNotWorking.put("maxvalue", "0");
-				columnNotWorking.put("label", "Not Working");
+				columnNotWorking.put("label", "Not Work");
 
 				colorArray.put(columnNotWorking);
 
 				JSONObject columnLower = new JSONObject();
-				columnLower.put("code", "#f6bc33");
+				columnLower.put("code", "#cacc3f");
 				columnLower.put("minvalue", "0");
 				columnLower.put("maxvalue", "4");
-				columnLower.put("label", "Lower");
+				columnLower.put("label", "Low");
 
 				colorArray.put(columnLower);
 
 				JSONObject columnGood = new JSONObject();
-				columnGood.put("code", "#6da81e");
+				columnGood.put("code", "#41cc3f");
 				columnGood.put("minvalue", "4");
 				columnGood.put("maxvalue", "9");
 				columnGood.put("label", "Good");
@@ -146,7 +148,7 @@ public class CapacityController extends BaseController {
 				colorArray.put(columnGood);
 
 				JSONObject columnOverload = new JSONObject();
-				columnOverload.put("code", "#e24b1a");
+				columnOverload.put("code", "#cc3f3f");
 				columnOverload.put("minvalue", "9");
 				columnOverload.put("maxvalue", "9999");
 				columnOverload.put("label", "Overload");
@@ -168,18 +170,42 @@ public class CapacityController extends BaseController {
 					if (!CommonUtil.isEmptyList(recordList)) {
 						// String name = recordList.get(0) == null ? "" : (String) recordList.get(0);
 						String role = recordList.get(1) == null ? "" : (String) recordList.get(1);
-						int dailyEffort = recordList.get(2) == null ? 0
-								: (int) ((BigDecimal) recordList.get(2)).doubleValue();
-						Integer weekInYear = (Integer) recordList.get(3);
-						String dayInWeekEngSn = (String) recordList.get(4);
-						Date dayId = new Date(((java.sql.Date) recordList.get(5)).getTime());
+						String dailyEffort = recordList.get(2) == null ? "" : (String) recordList.get(2);
+						int dailyEffortSum = recordList.get(3) == null ? 0
+								: (int) ((BigDecimal) recordList.get(3)).doubleValue();
+						Integer weekInYear = (Integer) recordList.get(4);
+						String dayInWeekEngSn = (String) recordList.get(5);
+						Date dayId = new Date(((java.sql.Date) recordList.get(6)).getTime());
+
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(dayId);
+
+						String year = cal.get(Calendar.YEAR) + "";
+						String month = cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH);
+						String day = cal.get(Calendar.DATE) + "";
+
+						String[] roles = role.split(",");
+						String[] dailyEfforts = dailyEffort.split(",");
+
+						StringBuffer toolText = new StringBuffer();
+						for (int j = 0; j < roles.length; j++) {
+							if (!CommonUtil.isEmptyString(roles[j])) {
+								toolText.append("Role : <b>" + roles[j] + "</b>&nbsp;&nbsp;&nbsp;&nbsp;");
+								toolText.append("Daily Effort : <b>" + dailyEfforts[j] + "</b>{br}");
+							}
+						}
 
 						JSONObject capacity = new JSONObject();
 						capacity.put("rowid", "W" + weekInYear.intValue());
 						capacity.put("columnid", dayInWeekEngSn);
-						capacity.put("value", dailyEffort);
-						capacity.put("tllabel", df.format(dayId));
-						capacity.put("trlabel", role);
+						capacity.put("value", dailyEffortSum);
+						capacity.put("tllabel", dailyEffortSum >= 0 ? dailyEffortSum + "" : " ");
+						capacity.put("displayValue", month + ". " + day);
+						capacity.put("toolText", dailyEffortSum >= 0
+								? "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >"
+										+ month + ". " + day + "</div>{br}" + toolText.toString()
+								: "<div id='nameDiv' style='font-size: 12px; border-bottom: 1px dashed #666666; font-weight:bold; padding-bottom: 3px; margin-bottom: 5px; display: inline-block; color: #888888;' >"
+										+ month + ". " + day + "</div>");
 
 						dataArray.put(capacity);
 					}

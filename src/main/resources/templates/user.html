@@ -1,0 +1,237 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+<head>
+	<meta charset="utf-8">
+	<title>Capacity Plan</title>
+	<meta name="viewport" content="width=device-width,minimum-scale=1">
+	<link rel="stylesheet" th:href="@{/public/amazeui/css/amazeui.min.css}" />
+	<link rel="stylesheet" th:href="@{/public/amazeui/css/admin.css}">
+
+	<script type="text/javascript" th:src="@{/public/js/jquery-3.4.1.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/fusioncharts.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/jquery-fusioncharts.js}"></script>
+	<script type="text/javascript" th:src="@{/public/js/themes/fusioncharts.theme.fusion.js}"></script>
+
+	<script th:src="@{/public/amazeui/js/amazeui.min.js}"></script>
+	<script th:src="@{/public/amazeui/js/app.js}"></script>
+	<script th:src="@{/public/js/jquery.popupoverlay.js}"></script>
+
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+
+			$('.delete-user-btn').on('click', function(){
+				var ntAccount = $(this).attr('id').replace("delete","");
+				var url = '/users?' + $.param({'ntAccounts': ntAccount});
+				$.ajax({
+					url : url,
+					method: 'delete',
+					contentType : 'application/json',
+
+					success: function(result) {
+						alert(result.message);
+						if(result.success === true) {
+							$('#' + ntAccount).remove();
+						}
+					},
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						alert("Something went wrong, please try again!");
+					}
+
+				});
+			});
+		});
+
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			// Initialize the plugin
+			$('#userCreation').popup();
+
+			// Set default `pagecontainer` for all popups (optional, but recommended for screen readers and iOS*)
+			$.fn.popup.defaults.pagecontainer = '#am-u-sm-12'
+		});
+
+	</script>
+
+
+</head>
+<body style="overflow:auto">		
+	<div th:replace="navigator"></div>
+	<div class="am-cf admin-main">
+		
+  <!-- content start -->
+  <div class="admin-content" style="overflow:auto">
+		<div class="admin-content-body">
+		  <div class="am-cf am-padding am-padding-bottom-0">
+			<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">User Management</strong> / <small>all users</small></div>
+		  </div>
+	
+		  <hr>
+	
+		  <div class="am-g">
+			<div class="am-u-sm-12 am-u-md-6">
+			  <div class="am-btn-toolbar">
+				<div class="am-btn-group am-btn-group-xs">
+				  <button type="button" class="am-btn am-btn-default userCreation_open"><span class="am-icon-plus"></span> Add User</button>
+				  <!--<button type="button" class="am-btn am-btn-default"><span class="am-icon-save"></span> Save</button>-->
+				  <!--<button type="button" class="am-btn am-btn-default"><span class="am-icon-archive"></span> 审核</button>-->
+				  <button type="button" class="am-btn am-btn-default"><span class="am-icon-trash-o"></span>Delete</button>
+				</div>
+			  </div>
+			</div>
+			<div class="am-u-sm-12 am-u-md-3">
+			  <div class="am-form-group">
+				<select data-am-selected="{btnSize: 'sm'}">
+				  <option th:each="r:${roleList}" th:text="${r.name}"></option>
+				</select>
+			  </div>
+			</div>
+			<div class="am-u-sm-12 am-u-md-3">
+			  <div class="am-input-group am-input-group-sm">
+				<input type="text" class="am-form-field">
+			  <span class="am-input-group-btn">
+				<button class="am-btn am-btn-default" type="button">Search</button>
+			  </span>
+			  </div>
+			</div>
+		  </div>
+	
+		  <div class="am-g">
+			<div class="am-u-sm-12">
+			  <form class="am-form">
+				<table class="am-table am-table-striped am-table-hover table-main">
+				  <thead>
+				  <tr>
+					<th class="table-check"><input type="checkbox" /></th>
+				    <th class="table-id">ID</th><th class="table-title">Name</th>
+					  <th class="table-type">NT Account</th>
+					  <th class="table-author am-hide-sm-only">Email</th>
+					  <th class="table-author am-hide-sm-only">Role</th>
+					  <th class="table-set">Actions</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+				  <tr th:if="${userList.isEmpty()}">
+					  <td colspan="2"> No Users Found.</td>
+				  </tr>
+				  <tr th:each="user : ${userList}" th:id="${user.ntAccount}">
+					<td><input type="checkbox" name = "id" th:value="${user.id}"/></td>
+					<td th:text="${user.id}"></td>
+				    <td><a href="" th:text="${user.name}">a</a></td>
+					<td th:text="${user.ntAccount}"></td>
+					<td th:text="${user.email}"></td>
+					<td th:text="${user.role.name}"></td>
+
+					<td>
+					  <div class="am-btn-toolbar">
+						<div class="am-btn-group am-btn-group-xs">
+						  <button class="am-btn am-btn-default am-btn-xs am-text-secondary"><span class="am-icon-pencil-square-o"></span> Edit</button>
+						  <!--<button class="am-btn am-btn-default am-btn-xs am-hide-sm-only"><span class="am-icon-copy"></span> 复制</button>-->
+						  <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only delete-user-btn" th:id="${'delete' + user.ntAccount}"><span class="am-icon-trash-o"></span> Delete</button>
+						</div>
+					  </div>
+					</td>
+				  </tr>
+
+				  </tbody>
+				</table>
+				<div class="am-cf" style="text-align: center">
+					<span th:text="${#lists.size(userList) + ' Records Found.'}"></span>
+				  <!--<div class="am-fr">
+					<ul class="am-pagination">
+					  <li class="am-disabled"><a href="#">«</a></li>
+					  <li class="am-active"><a href="#">1</a></li>
+					  <li><a href="#">2</a></li>
+					  <li><a href="#">3</a></li>
+					  <li><a href="#">4</a></li>
+					  <li><a href="#">5</a></li>
+					  <li><a href="#">»</a></li>
+					</ul>
+				  </div>-->
+				</div>
+				
+			  </form>
+			</div>
+	
+		  </div>
+		</div>	
+			
+	  </div>
+	  <!-- content end -->
+		<div id="userCreation" class="container">
+
+			<div class="row" style="margin-top:20px">
+				<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+					<form th:action="@{/users}" method="post" th:object="${user}">
+						<fieldset>
+							<h1>Please Enter User Details</h1>
+							<div th:switch="${userCreated}">
+								<div th:case="true" class="alert alert-info">
+									User created successfully!
+								</div>
+
+								<div th:case="false" class="alert alert-info">
+									Can't create user!
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="text" name="name" placeholder="Name"  class="form-control input-lg" th:field="*{name}">
+							</div>
+							<div class="form-group">
+								<input type="text" name="ntAccount" placeholder="NT Account"  class="form-control input-lg" th:field="*{ntAccount}">
+							</div>
+							<div class="form-group">
+								<input type="text" name="email" placeholder="Email"  class="form-control input-lg" th:field="*{email}">
+							</div>
+							<div class="form-group">
+								<input type="password" name="password" placeholder="Password"  class="form-control input-lg" th:field="*{password}">
+							</div>
+							<div class="form-group">
+								<select name="role"  class="form-control selcls" th:field="${user.role.name}">
+									<option th:each="r:${roleList}" th:value="${r.name}" th:text="${r.name}"></option>
+								</select>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<input type="submit" class="btn btn-lg btn-primary btn-block" value="Create User"/>
+								</div>
+							</div>
+
+						</fieldset>
+					</form>
+				</div>
+			</div>
+
+		</div>
+</body>
+
+
+
+<!--<script>
+$( function() {
+	$('#addPlanBtn').click(function() {
+            // alert($('#addPlanForm').serialize());
+			$.ajax({
+				type: "POST",
+				dataType: "html",
+				url: '/activity/save',
+				data: $('#addPlanForm').serialize(),
+				success: function (data) {
+					// var strresult=data;
+					// alert(strresult);
+					window.location = '/plan';
+				},
+				error: function(data) {
+					alert("error:"+data.responseText);
+					}
+			});
+        });
+
+} );-->
+
+
+</html>
