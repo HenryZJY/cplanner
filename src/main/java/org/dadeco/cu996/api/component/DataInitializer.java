@@ -55,24 +55,24 @@ public class DataInitializer implements
         createRoleIfNotFound("ROLE_ADMIN");
         createRoleIfNotFound("ROLE_USER");
 
-        String adminEmail = "test@dadeco.com";
-        String adminNtAccount = "test7sgh";
+        String adminEmail = "admin@dadeco.bosch.com";
+        String adminNtAccount = "admin1sgh";
 
-        String userEmail = "user@dadeco.com";
-        String userAccount = "user7sgh";
-
-        String userEmail2 = "user2@dadeco.com";
-        String userAccount2 = "user8sgh";
+//        String userEmail = "user@dadeco.com";
+//        String userAccount = "user7sgh";
+//
+//        String userEmail2 = "user2@dadeco.com";
+//        String userAccount2 = "user8sgh";
 
         User admin = userRepository.findByEmail(adminEmail);
-        User nonAdmin = userRepository.findByEmail(userEmail);
-        User nonAdmin2 = userRepository.findByNtAccount(userAccount2);
+//        User nonAdmin = userRepository.findByEmail(userEmail);
+//        User nonAdmin2 = userRepository.findByNtAccount(userAccount2);
         if(admin == null) {
 
             Role adminRole = roleRepository.findByName("ROLE_ADMIN");
             User user = new User();
-            user.setName("Test");
-            user.setPassword(passwordEncoder.encode("test"));
+            user.setName("Admin");
+            user.setPassword(passwordEncoder.encode("test123!"));
             user.setEmail(adminEmail);
             /*Set<Role> roles = new HashSet<>();
             roles.add(adminRole);*/
@@ -81,33 +81,33 @@ public class DataInitializer implements
             userRepository.save(user);
         }
 
-        if(nonAdmin == null) {
-
-            Role userRole = roleRepository.findByName("ROLE_USER");
-            User user = new User();
-            user.setName("User");
-            user.setPassword(passwordEncoder.encode("test"));
-            user.setEmail(userEmail);
-            /*Set<Role> roles = new HashSet<>();
-            roles.add(userRole);*/
-            user.setRole(userRole);
-            user.setNtAccount(userAccount);
-            userRepository.save(user);
-        }
-
-        if(nonAdmin2 == null) {
-
-            Role userRole = roleRepository.findByName("ROLE_USER");
-            User user = new User();
-            user.setName("User2");
-            user.setPassword(passwordEncoder.encode("test"));
-            user.setEmail(userEmail2);
-           /* Set<Role> roles = new HashSet<>();
-            roles.add(userRole);*/
-            user.setRole(userRole);
-            user.setNtAccount(userAccount2);
-            userRepository.save(user);
-        }
+//        if(nonAdmin == null) {
+//
+//            Role userRole = roleRepository.findByName("ROLE_USER");
+//            User user = new User();
+//            user.setName("User");
+//            user.setPassword(passwordEncoder.encode("test"));
+//            user.setEmail(userEmail);
+//            /*Set<Role> roles = new HashSet<>();
+//            roles.add(userRole);*/
+//            user.setRole(userRole);
+//            user.setNtAccount(userAccount);
+//            userRepository.save(user);
+//        }
+//
+//        if(nonAdmin2 == null) {
+//
+//            Role userRole = roleRepository.findByName("ROLE_USER");
+//            User user = new User();
+//            user.setName("User2");
+//            user.setPassword(passwordEncoder.encode("test"));
+//            user.setEmail(userEmail2);
+//           /* Set<Role> roles = new HashSet<>();
+//            roles.add(userRole);*/
+//            user.setRole(userRole);
+//            user.setNtAccount(userAccount2);
+//            userRepository.save(user);
+//        }
 
         ActivityRole pm = new ActivityRole();
         pm.setName("PM");
