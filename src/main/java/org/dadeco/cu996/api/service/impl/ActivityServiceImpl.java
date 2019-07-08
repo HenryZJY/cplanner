@@ -6,6 +6,11 @@ import org.dadeco.cu996.api.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class ActivityServiceImpl implements ActivityService {
     @Autowired
@@ -14,5 +19,15 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Activity save(Activity activity) {
         return activityRepository.save(activity);
+    }
+
+    @Override
+    public List<Object[]> findEffortByPjoname() {
+        List<Object[]> list = new ArrayList<Object[]>();
+
+        list = activityRepository.findEffortByPjoname();
+
+        int total = 0;
+        return null;
     }
 }
