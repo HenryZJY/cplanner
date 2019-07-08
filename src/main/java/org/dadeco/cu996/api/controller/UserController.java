@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,9 @@ public class UserController {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@GetMapping
 	public ModelAndView getUserList(HttpServletRequest request) {
 		List<User> userList = userRepository.findAll();
@@ -91,6 +95,7 @@ public class UserController {
 			}
 			
 			user.setRole(roleRepository.findById(user.getRole().getId()).get());
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			userRepository.save(user);
 			userCreated = true;
 		} else {
