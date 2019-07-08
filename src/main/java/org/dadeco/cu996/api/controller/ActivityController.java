@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Controller("activity")
 @RequestMapping("/activity")
@@ -41,6 +43,16 @@ public class ActivityController extends BaseController {
         activityService.save(activity);
 
         return CommonReturnType.create(null);
+    }
+
+    @RequestMapping(value = "/role", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType decsProject() throws BusinessException {
+
+
+        List<Object[]> Activity = activityService.findEffortByPjoname();
+
+        return CommonReturnType.create(Activity);
     }
 
 }

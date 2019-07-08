@@ -50,4 +50,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Integer> {
 				 + "  order by a.userid, "
 				 + "           str_to_date(a.start,'%Y-%m-%d %H:%i:%s') asc", nativeQuery = true)
 	public List<List<Object>> findByStartAndEndForTeam(String startDate, String endDate);
+
+	@Query(value = "select name, role , sum(DATEDIFF( end, start)) as effort from activity group by name, role; ", nativeQuery = true)
+	List<Object[]> findEffortByPjoname();
 }
