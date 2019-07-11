@@ -26,10 +26,20 @@
 
 <script>
 $( function() {
-	$.get("test.cgi", { name: "John", time: "2pm" },
-  	function(data){
-    	alert("Data Loaded: " + data);
-  });
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: '/activity/role',
+		// data: $('#addPlanForm').serialize(),
+		success: function (data) {
+			// alert(data);
+			alert(data.status);
+			alert(data.data);
+		},
+		error: function(data) {
+			alert("error:"+data.responseText);
+		}
+	});
 
 	$("#chart-container").insertFusionCharts({
 			type: "marimekko",
@@ -38,8 +48,8 @@ $( function() {
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Processing of Municipal Waste in Select Countries",
-					subcaption: "For the year 2015",
+					caption: "Summary of All roles and efforts",
+					subcaption: "For DAD",
 					numbersuffix: "%",
 					showsum: "1",
 					usepercentdistribution: "1",

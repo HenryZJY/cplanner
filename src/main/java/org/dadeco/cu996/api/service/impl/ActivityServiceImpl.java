@@ -23,11 +23,15 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Object[]> findEffortByPjoname() {
-        List<Object[]> list = new ArrayList<Object[]>();
-
-        list = activityRepository.findEffortByPjoname();
+        List<Object[]> list = activityRepository.findEffortByPjoname();
 
         int total = 0;
-        return null;
+        System.out.println(list.getClass());
+        for(Object[] objs : list){
+            System.out.println(objs[0] + "====>" + objs[1] + "===>" + objs[2]);
+        }
+        return list;
     }
+
+
 }
