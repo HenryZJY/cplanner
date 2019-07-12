@@ -1,4 +1,4 @@
-# cu996
+# cplanner
 Capacity board for better resource planning. Let's say "see you" to working 996! 
 <br>
 links:<br>

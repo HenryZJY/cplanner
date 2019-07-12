@@ -26,10 +26,72 @@
 
 <script>
 $( function() {
-	$.get("test.cgi", { name: "John", time: "2pm" },
-  	function(data){
-    	alert("Data Loaded: " + data);
-  });
+	// Initialize the roles.
+	// Change the keys to BCP, CIAM, etc. when the roles are added to our table in database. Currently unavailable. Using the name column instead.
+	var BA = {"PJO1": 0, "PJO2": 0, "PJO3": 0, "PJO5": 0, "PJO7": 0, "PJO8": 0};
+	var PM = {"PJO1": 0, "PJO2": 0, "PJO3": 0, "PJO5": 0, "PJO7": 0, "PJO8": 0};
+	var DEV = {"PJO1": 0, "PJO2": 0, "PJO3": 0, "PJO5": 0, "PJO7": 0, "PJO8": 0};
+	var ARCH = {"PJO1": 0, "PJO2": 0, "PJO3": 0, "PJO5": 0, "PJO7": 0, "PJO8": 0};
+
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: '/activity/role',
+		// data: $('#addPlanForm').serialize(),
+		success: function (data) {
+			// alert(data);
+			alert(data.status);
+			alert(data.data);
+			// alert("Type of data.data=======" + typeof (data.data));
+
+			var RoleLst = JSON.parse(data.data);
+			alert("Type of data.RoleLst=======" + typeof (RoleLst));
+
+			RoleLst.forEach(function(individual){
+				// Increase the amount of effort according to the data.
+				alert("Test the loop data. Name" + individual.name);
+				switch (individual.role) {
+					case "BA":
+						for (var key1 in BA){
+							if(key1 == individual.name){
+								// alert("This is key1" + key1);
+								// alert("Switch case 1 run!!");
+								BA[key1] += individual.effort;
+							}
+						}
+						break;
+					case "PM":
+						for (var key2 in PM){
+							if(key2 == individual.name){
+								PM[key2] += individual.effort;
+							}
+						}
+						break;
+
+					case "DEV":
+						for (var key3 in DEV){
+							if(key3 == individual.name){
+								DEV[key3] += individual.effort;
+							}
+						}
+						break;
+
+					case "ARCH":
+						for (var key4 in ARCH){
+							if(key4 == individual.name){
+								ARCH[key4] += individual.effort;
+							}
+						}
+				}
+
+			})
+		},
+		error: function(data) {
+			alert("error:"+data.responseText);
+		}
+	});
+	alert("BA in PJO1(RCM) ==========" + BA.PJO1);
+
 
 	$("#chart-container").insertFusionCharts({
 			type: "marimekko",
@@ -38,8 +100,8 @@ $( function() {
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Processing of Municipal Waste in Select Countries",
-					subcaption: "For the year 2015",
+					caption: "Summary of All roles and efforts",
+					subcaption: "For DAD",
 					numbersuffix: "%",
 					showsum: "1",
 					usepercentdistribution: "1",
@@ -78,28 +140,29 @@ $( function() {
 						]
 					}
 				],
+				// Should also change the PJOs to the actual project categories.
 				dataset: [
 					{
 						seriesname: "BA",
 						color: "#149868",
 						data: [
 							{
-								value: "65"
+								value: 100*BA.PJO1 / (BA.PJO1 + PM.PJO1 + DEV.PJO1 + ARCH.PJO1)
 							},
 							{
-								value: "43"
+								value: 100*BA.PJO2 / (BA.PJO2 + PM.PJO2 + DEV.PJO2 + ARCH.PJO2)
 							},
 							{
-								value: "41"
+								value: 100*BA.PJO3 / (BA.PJO3 + PM.PJO3 + DEV.PJO3 + ARCH.PJO3)
 							},
 							{
-								value: "38"
+								value: 100*BA.PJO5 / (BA.PJO5 + PM.PJO5 + DEV.PJO5 + ARCH.PJO5)
 							},
 							{
-								value: "10"
+								value: 100*BA.PJO7 / (BA.PJO7 + PM.PJO7 + DEV.PJO7 + ARCH.PJO7)
 							},
 							{
-								value: "15"
+								value: 100*BA.PJO8 / (BA.PJO8 + PM.PJO8 + DEV.PJO8 + ARCH.PJO8)
 							}
 						]
 					},
@@ -108,22 +171,22 @@ $( function() {
 						color: "#E7BC4F",
 						data: [
 							{
-								value: "22"
+								value: 100 * PM.PJO1 / (BA.PJO1 + PM.PJO1 + DEV.PJO1 + ARCH.PJO1)
 							},
 							{
-								value: "23"
+								value: 100 * PM.PJO2 / (BA.PJO2 + PM.PJO2 + DEV.PJO2 + ARCH.PJO2)
 							},
 							{
-								value: "6"
+								value: 100 * PM.PJO3 / (BA.PJO3 + PM.PJO3 + DEV.PJO3 + ARCH.PJO3)
 							},
 							{
-								value: "33"
+								value: 100 * PM.PJO5 / (BA.PJO5 + PM.PJO5 + DEV.PJO5 + ARCH.PJO5)
 							},
 							{
-								value: "20"
+								value: 100 * PM.PJO7 / (BA.PJO7 + PM.PJO7 + DEV.PJO7 + ARCH.PJO7)
 							},
 							{
-								value: "10"
+								value: 100 * PM.PJO8 / (BA.PJO8 + PM.PJO8 + DEV.PJO8 + ARCH.PJO8)
 							}
 						]
 					},
@@ -133,22 +196,22 @@ $( function() {
 						showvalues: "0",
 						data: [
 							{
-								value: "13"
+								value: 100 * DEV.PJO1 / (BA.PJO1 + PM.PJO1 + DEV.PJO1 + ARCH.PJO1)
 							},
 							{
-								value: "0"
+								value: 100 * DEV.PJO2 / (BA.PJO2 + PM.PJO2 + DEV.PJO2 + ARCH.PJO2)
 							},
 							{
-								value: "0"
+								value: 100 * DEV.PJO3 / (BA.PJO3 + PM.PJO3 + DEV.PJO3 + ARCH.PJO3)
 							},
 							{
-								value: "0"
+								value: 100 * DEV.PJO5 / (BA.PJO5 + PM.PJO5 + DEV.PJO5 + ARCH.PJO5)
 							},
 							{
-								value: "30"
+								value: 100 * DEV.PJO7 / (BA.PJO7 + PM.PJO7 + DEV.PJO7 + ARCH.PJO7)
 							},
 							{
-								value: "35"
+								value: 100 * DEV.PJO8 / (BA.PJO8 + PM.PJO8 + DEV.PJO8 + ARCH.PJO8)
 							}
 						]
 					},
@@ -157,23 +220,23 @@ $( function() {
 						color: "#EA9999",
 						data: [
 							{
-								value: "0",
-								showvalue: "0"
+								value: 100 * ARCH.PJO1 / (BA.PJO1 + PM.PJO1 + DEV.PJO1 + ARCH.PJO1)
+								// showvalue: "0"
 							},
 							{
-								value: "34"
+								value: 100 * ARCH.PJO2 / (BA.PJO2 + PM.PJO2 + DEV.PJO2 + ARCH.PJO2)
 							},
 							{
-								value: "53"
+								value: 100 * ARCH.PJO3 / (BA.PJO3 + PM.PJO3 + DEV.PJO3 + ARCH.PJO3)
 							},
 							{
-								value: "29"
+								value: 100 * ARCH.PJO5 / (BA.PJO5 + PM.PJO5 + DEV.PJO5 + ARCH.PJO5)
 							},
 							{
-								value: "20"
+								value: 100 * ARCH.PJO7 / (BA.PJO7 + PM.PJO7 + DEV.PJO7 + ARCH.PJO7)
 							},
 							{
-								value: "30"
+								value: 100 * ARCH.PJO8 / (BA.PJO8 + PM.PJO8 + DEV.PJO8 + ARCH.PJO8)
 							}
 						]
 					}

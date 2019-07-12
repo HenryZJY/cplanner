@@ -6,8 +6,13 @@ import org.dadeco.cu996.api.model.RuntimeUserInfo;
 import org.dadeco.cu996.api.response.CommonReturnType;
 import org.dadeco.cu996.api.service.impl.ActivityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import org.dadeco.cu996.utils.CommonUtil;
 
 
 @Controller("activity")
@@ -41,6 +46,28 @@ public class ActivityController extends BaseController {
         activityService.save(activity);
 
         return CommonReturnType.create(null);
+    }
+
+    @RequestMapping(value = "/role", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType decsProject() throws BusinessException, JSONException {
+
+
+        List<Object[]> Activity = activityService.findEffortByPjoname();
+        JSONArray EffortArray = new JSONArray();
+
+
+//        Individual.put("role", Activity.get(0)[0]);
+        for(Object[] onerole: Activity){
+            JSONObject Individual = new JSONObject();
+            Individual.put("name", onerole[0]);
+            Individual.put("role", onerole[1]);
+            Individual.put("effort", onerole[2]);
+            EffortArray.put(Individual);
+        }
+
+
+        return CommonReturnType.create(EffortArray.toString());
     }
 
 }
