@@ -8,6 +8,9 @@ import org.dadeco.cu996.api.service.PersonalCapacityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PersonalCapacityServiceImpl implements PersonalCapacityService {
 	@Autowired
@@ -15,8 +18,9 @@ public class PersonalCapacityServiceImpl implements PersonalCapacityService {
 
 	@Override
 	public List<List<Object>> getPersonalCapacityByMonth(RuntimeUserInfo user, String startDate, String endDate) {
+		log.info("Get [{}] capacity from [{}] to [{}]", user.getNtAccount(), startDate, endDate);
+		
 		List<List<Object>> activities = null;
-
 		if (user != null) {
 			activities = activityRepository.findByUserIdAndStartAndEnd(user.getNtAccount(), startDate, endDate);
 		}

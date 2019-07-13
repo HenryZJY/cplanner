@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.dadeco</groupId>
     <artifactId>cplanner</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>cplanner</name>
     <description>Capacity board</description>
 

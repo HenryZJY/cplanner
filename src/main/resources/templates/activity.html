@@ -39,23 +39,19 @@ $( function() {
 		url: '/activity/role',
 		// data: $('#addPlanForm').serialize(),
 		success: function (data) {
-			// alert(data);
-			alert(data.status);
-			alert(data.data);
-			// alert("Type of data.data=======" + typeof (data.data));
+			console.log(data.status);
+			console.log(data.data);
 
 			var RoleLst = JSON.parse(data.data);
-			alert("Type of data.RoleLst=======" + typeof (RoleLst));
+			console.log("Type of data.RoleLst=======" + typeof (RoleLst));
 
 			RoleLst.forEach(function(individual){
 				// Increase the amount of effort according to the data.
-				alert("Test the loop data. Name" + individual.name);
+				console.log("Test the loop data. Name" + individual.name);
 				switch (individual.role) {
 					case "BA":
 						for (var key1 in BA){
 							if(key1 == individual.name){
-								// alert("This is key1" + key1);
-								// alert("Switch case 1 run!!");
 								BA[key1] += individual.effort;
 							}
 						}
@@ -90,7 +86,7 @@ $( function() {
 			alert("error:"+data.responseText);
 		}
 	});
-	alert("BA in PJO1(RCM) ==========" + BA.PJO1);
+	console.log("BA in PJO1(RCM) ==========" + BA.PJO1);
 
 
 	$("#chart-container").insertFusionCharts({

@@ -22,22 +22,26 @@
 </head>
 <body style="overflow:auto">
     <div th:replace="navigator"></div>
-    <div class="am-cf" style="margin-top:50px;">
-        
-
-            <div class="am-g am-margin-top">
-                <div class="am-u-sm-4 am-u-md-2 am-input-group date" id="startDate" data-date-format="yyyy-mm">
-                    <input size="16" type="text" class="am-form-field" readonly placeHolder="From Month" id="startDateText">
-                    <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
-                </div>
-                <div style="float:left" class="am-u-sm-4 am-u-md-2 am-input-group date" id="endDate" data-date-format="yyyy-mm">
-                    <input size="16" type="text" class="am-form-field" readonly placeHolder="To Month" id="endDateText">
-                    <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
-                </div>
+    <div class="am-cf admin-main">
+		<div class="admin-content">
+ 			<div id="msg" style="margin-top:10px;"></div>
+    		<div class="am-cf">
+	            <div class="am-g am-margin-top">
+	                <div class="am-u-sm-4 am-u-md-2 am-input-group date" id="startDate" data-date-format="yyyy-mm">
+	                    <input size="16" type="text" class="am-form-field" readonly placeHolder="From Month" id="startDateText">
+	                    <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+	                </div>
+	                <div style="float:left" class="am-u-sm-4 am-u-md-2 am-input-group date" id="endDate" data-date-format="yyyy-mm">
+	                    <input size="16" type="text" class="am-form-field" readonly placeHolder="To Month" id="endDateText">
+	                    <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+	                </div>
+	            </div>
             </div>
-    </div>
-
-  	<div id="chart-container"></div>
+            
+            
+  			<div id="chart-container"></div>
+		</div>
+	</div>
 </body>
 
 
@@ -56,7 +60,10 @@ $( function() {
     });
 
 
+    var msg = $('#msg');
     var render = function(){
+    	msg.empty();
+    	
         start = $('#startDateText').val();   	
     	end = $('#endDateText').val();
         if(!start || !end){
@@ -71,7 +78,7 @@ $( function() {
         $.get("/capacity/getPersonalMonthlyCapacity", { startMonth: start+'-01', endMonth: end+'-01' },
       	  	function(res){
         		if(res.status == 'fail'){
-                    alert('query failed!');
+        			msg.html('<div class="am-alert am-alert-danger"><strong>Error: </strong>Query failed, please contact administrator!</div>');
                     return;
                 }
                 
