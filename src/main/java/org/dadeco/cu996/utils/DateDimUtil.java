@@ -1,7 +1,6 @@
 package org.dadeco.cu996.utils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +12,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.sql.DataSource;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class DateDimUtil {
 	private static final int[][] MONTH_ARRAY = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 10, 11, 12 } };
 	private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -215,14 +219,14 @@ public class DateDimUtil {
 		return df.parse(year + "-12-31 23:59:59");
 	}
 
-	public static void initDateDim() throws ParseException {
+	public static void initDateDim(DataSource dataSource) throws ParseException {
 		Calendar calStart = Calendar.getInstance();
 		calStart.set(Calendar.YEAR, 2019);
 		calStart.set(Calendar.MONTH, 0);
 		calStart.set(Calendar.DATE, 1);
 
 		Calendar calEnd = Calendar.getInstance();
-		calEnd.set(Calendar.YEAR, 2030);
+		calEnd.set(Calendar.YEAR, 2020);
 		calEnd.set(Calendar.MONTH, 11);
 		calEnd.set(Calendar.DATE, 31);
 
@@ -236,9 +240,10 @@ public class DateDimUtil {
 		Statement st = null;
 
 		try {
-			String url = "jdbc:mysql://localhost:3306/cplanner?user=root&password=root";
-			conn = DriverManager.getConnection(url);
-
+//			String url = "jdbc:mysql://localhost:3306/cplanner?user=root&password=root";
+//			conn = DriverManager.getConnection(url);
+			
+			conn = dataSource.getConnection();
 			conn.setAutoCommit(false);
 
 			st = conn.createStatement();
@@ -462,7 +467,7 @@ public class DateDimUtil {
 
 			conn.setAutoCommit(true);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		} finally {
 			if (rs != null) {
 				try {
