@@ -1,6 +1,6 @@
 package org.dadeco.cu996.api.component;
 
-import java.text.ParseException;
+import javax.sql.DataSource;
 
 import org.dadeco.cu996.api.model.ActivityRole;
 import org.dadeco.cu996.api.model.Role;
@@ -10,6 +10,7 @@ import org.dadeco.cu996.api.repository.RoleRepository;
 import org.dadeco.cu996.api.repository.UserRepository;
 import org.dadeco.cu996.utils.DateDimUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -17,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 @DependsOn("securityConfig")
 public class DataInitializer implements
@@ -35,7 +39,11 @@ public class DataInitializer implements
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    
+    @Qualifier("dataSource")
+    @Autowired
+    private DataSource dataSource;
+    
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -139,9 +147,9 @@ public class DataInitializer implements
             activityRoleRepository.save(dev);
 
         try {
-            DateDimUtil.initDateDim();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            DateDimUtil.initDateDim(dataSource);
+        } catch (Exception e) {
+           log.error(e.getMessage(), e);
         }
 
         alreadySetup = true;

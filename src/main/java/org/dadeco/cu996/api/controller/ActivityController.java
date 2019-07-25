@@ -25,7 +25,7 @@ public class ActivityController extends BaseController {
 
     @RequestMapping(value = "/save", method = {RequestMethod.POST})
     @ResponseBody
-    public CommonReturnType createItem(@SessionAttribute RuntimeUserInfo currentUser,
+    public CommonReturnType createItem(
     								   @RequestParam(name = "name") String name,
                                        @RequestParam(name = "start") String start,
                                        @RequestParam(name = "end") String end,
@@ -41,7 +41,7 @@ public class ActivityController extends BaseController {
         activity.setRole(role);
         activity.setDailyEffort(effort);
         activity.setIsPlanned(is_planned);
-        activity.setUserId(currentUser.getNtAccount());
+        activity.setUserId(getCurrentUser().getNtAccount());
 
         activityService.save(activity);
 

@@ -22,10 +22,10 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(HttpSession session) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        RuntimeUserInfo currentUser = (RuntimeUserInfo) auth.getPrincipal();
-
-        session.setAttribute("currentUser", currentUser);
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        RuntimeUserInfo currentUser = (RuntimeUserInfo) auth.getPrincipal();
+//
+//        session.setAttribute("currentUser", currentUser);
         return "overall_capacity_overview";
     }
 

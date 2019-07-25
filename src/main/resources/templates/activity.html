@@ -58,13 +58,11 @@ $( function() {
 		url: '/activity/role',
 		// data: $('#addPlanForm').serialize(),
 		success: function (data) {
-			// alert(data);
-			alert(data.status);
-			alert(data.data);
-			// alert("Type of data.data=======" + typeof (data.data));
+			console.log(data.status);
+			console.log(data.data);
 
 			var RoleLst = JSON.parse(data.data);
-			alert("Type of data.RoleLst=======" + typeof (RoleLst));
+			console.log("Type of data.RoleLst=======" + typeof (RoleLst));
 
 			RoleLst.forEach(function(individual){
 				// Individual's parameters are in ActivityController
@@ -94,7 +92,7 @@ $( function() {
 			alert("error:"+data.responseText);
 		}
 	});
-	alert("BA in PJO1(RCM) ==========" + BA.PJO1);
+	console.log("BA in PJO1(RCM) ==========" + BA.PJO1);
 
 
 	// FusionChart data
@@ -243,8 +241,6 @@ $( function() {
 				]
 			}
 		});
-
-
 } );
 </script>
 </html>
